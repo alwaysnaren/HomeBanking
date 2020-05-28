@@ -1,7 +1,7 @@
 package com.naren.route.dataStructure
 
 import com.naren.route.utils.Implicits.ObjectOps
-import com.naren.route.utils.Implicits.{DoubleOps, StringOps}
+import com.naren.route.utils.Implicits.{DoubleOps, StringOps, XSSFRowOps}
 import org.apache.poi.xssf.usermodel.{XSSFRow, XSSFSheet}
 
 import scala.collection.mutable.ArrayBuffer
@@ -24,7 +24,7 @@ case class Page[N <: Record[N]: ClassTag](name: String, parent: Database = null)
 
   def getRow(rowNum: Int): N = {
     if(rowNum > 0 && rowNum <= getLastRowNum) {
-      val row = xssfSheet.getRow(rowNum)
+      val row = xssfSheet.getRow(rowNum).toStrArray
       ex(row)
     } else null.asInstanceOf[N]
   }

@@ -61,27 +61,7 @@ case class Transaction(
 
 }
 
-object Transaction extends Record[Transaction]{
-  def apply(row: XSSFRow): Transaction = {
-    if(row.getLastCellNum.toInt == (fields.length-1)) {
-      val records = row.toStrArray
-      new Transaction(
-        records(0).toLong,
-        records(1),
-        records(2),
-        records(3),
-        records(4),
-        records(5),
-        records(6).toDouble.format,
-        records(7).toLong,
-        records(8).toDouble.format,
-        records(9).toDouble.format,
-        records(10).toDouble.format,
-        records(11).toDouble.format,
-      )
-    }
-    else null // TODO -- Implement logger with Option
-  }
+object Transaction {
 
   def apply(deb: CheckingTransaction): Transaction =
     new Transaction(

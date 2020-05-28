@@ -21,19 +21,7 @@ case class Food(
     )
 }
 
-object Food extends Record[Food]{
-  def apply(row: XSSFRow): Food = {
-    val records = row.toStrArray
-    new Food(
-      records(TXN_ID).toLong,
-      records(DATE_TIME),
-      records(STREAM),
-      records(VENDOR),
-      records(ACCOUNT_ID).toLong,
-      records(AMOUNT).toDouble.format,
-      records(TILL_DATE).toDouble.format
-    )
-  }
+object Food {
 
   def apply(cc: CCtransaction): Food =
     new Food(

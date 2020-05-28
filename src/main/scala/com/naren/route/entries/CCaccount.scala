@@ -15,20 +15,3 @@ case class CCaccount(
                       dateCreated: String,
                       active: Boolean
                     ) extends Record[CCaccount]
-
-object CCaccount {
-  def apply(row: XSSFRow): CCaccount = {
-    val records = row.toStrArray
-    new CCaccount(
-      records(0).toLong,
-      records(1),
-      records(2),
-      records(3).toInt,
-      records(4).toLong,
-      records(5),
-      records(6),
-      records(7),
-      records(8).toBoolean
-    )
-  }
-}

@@ -15,19 +15,4 @@ case class CheckingAccount(
                         active: Boolean
                        ) extends Record[CheckingAccount]
 
-object CheckingAccount extends Record[CheckingAccount] {
-  def apply(row: XSSFRow): CheckingAccount = {
-    val records = row.toStrArray
-    new CheckingAccount(
-      records(0).toLong,
-      records(1),
-      records(2),
-      records(3),
-      records(4).toLong,
-      records(5).toLong,
-      records(6),
-      records(7).toBoolean
-    )
-  }
-}
 

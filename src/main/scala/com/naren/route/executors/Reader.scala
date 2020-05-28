@@ -1,14 +1,11 @@
-package com.naren.route.data
+package com.naren.route.executors
 
-import com.naren.route.dataStructure._
 import com.naren.route.constants.FileSystem._
+import com.naren.route.constants.KeyWords.DEBIT
 import com.naren.route.constants.Months.JAN
-import com.naren.route.dataType.{Investment, Transaction}
-import com.naren.route.constants.KeyWords._
-import com.naren.route.dataType.Accounts.{Checking, CreditCard}
-import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
-
-import scala.reflect.ClassTag
+import com.naren.route.dataStructure.{Book, Page, YearBook}
+import com.naren.route.dataType.Transaction
+import com.naren.route.dataType.TransactionTypes.CheckingTransaction
 
 object Reader {
 

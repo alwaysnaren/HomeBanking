@@ -39,21 +39,3 @@ case class Deposit(
   }
 
 }
-
-object Deposit extends Record[Deposit]{
-
-  def apply(row: XSSFRow): Deposit = {
-    val records = row.toStrArray
-    new Deposit(
-      records(TXN_ID).toLong,
-      records(DATE_TIME),
-      records(STREAM),
-      records(SOURCE),
-      records(PURPOSE),
-      records(VENDOR),
-      records(AMOUNT).toDouble.format,
-      records(ACCOUNT_ID).toLong,
-      records(TILL_DATE).toDouble.format
-    )
-  }
-}

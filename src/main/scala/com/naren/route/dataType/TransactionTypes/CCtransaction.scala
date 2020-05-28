@@ -33,21 +33,3 @@ case class CCtransaction(
     }
   }
 }
-
-object CCtransaction extends Record[CCtransaction]{
-  def apply(row: XSSFRow): CCtransaction = {
-    val records = row.toStrArray
-    new CCtransaction(
-      records(TXN_ID).toLong,
-      records(DATE_TIME),
-      records(STREAM),
-      records(SOURCE),
-      records(PURPOSE),
-      records(VENDOR),
-      records(AMOUNT).toDouble.format,
-      records(ACCOUNT_ID).toLong,
-      records(TILL_DATE).toDouble.format
-    )
-  }
-
-}

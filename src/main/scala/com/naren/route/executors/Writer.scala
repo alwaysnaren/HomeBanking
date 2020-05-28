@@ -3,7 +3,6 @@ package com.naren.route.executors
 import com.naren.route.constants.FileSystem.{MASTER, PATH, YEAR_BOOK}
 import com.naren.route.constants.KeyWords._
 import com.naren.route.constants.pages.{CheckingAccounts, CreditCards}
-import com.naren.route.data.Reader
 import com.naren.route.dataStructure.{Book, Page, YearBook}
 import com.naren.route.dataType.Accounts.{Checking, CreditCard}
 import com.naren.route.dataType._

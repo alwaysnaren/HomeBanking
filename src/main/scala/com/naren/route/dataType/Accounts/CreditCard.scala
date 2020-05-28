@@ -23,20 +23,7 @@ case class CreditCard(
 }
 
 object CreditCard {
-
   def apply(deb: CheckingTransaction): CreditCard =
     new CreditCard(deb.txnID, deb.dateTime, deb.vendor, deb.amount, deb.amount,
       CreditCards.getCreditLine(deb.vendor) - deb.amount)
-
-  def apply(row: XSSFRow): CreditCard = {
-    val records = row.toStrArray
-    new CreditCard (
-      records(TXN_ID).toLong,
-      records(DATE_TIME),
-      records(VENDOR),
-      records(AMOUNT).toDouble.format,
-      records(DEBT).toDouble.format,
-      records(CC_BALANCE).toDouble.format
-    )
-  }
 }

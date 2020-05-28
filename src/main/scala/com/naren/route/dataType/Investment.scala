@@ -27,21 +27,3 @@ case class Investment(
     )
   }
 }
-
-object Investment extends Record[Investment]{
-  def apply(row: XSSFRow): Investment = {
-    val records = row.toStrArray
-    new Investment(
-      records(0).toLong,
-      records(1),
-      records(2),
-      records(3).toLong,
-      records(4),
-      records(5),
-      records(6).toDouble.format,
-      records(7).toLong,
-      records(8).toDouble.format,
-      records(9).toDouble.format
-    )
-  }
-}

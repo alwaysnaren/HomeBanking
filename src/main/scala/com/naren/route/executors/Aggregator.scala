@@ -1,6 +1,5 @@
 package com.naren.route.executors
 
-import com.naren.route.data.Reader
 import com.naren.route.dataType.Loan
 
 import scala.collection.mutable.ArrayBuffer

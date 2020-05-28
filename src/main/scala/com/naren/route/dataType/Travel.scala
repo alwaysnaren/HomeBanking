@@ -23,20 +23,7 @@ case class Travel(
     )
 }
 
-object Travel extends Record[Travel]{
-  def apply(row: XSSFRow): Travel = {
-    val records = row.toStrArray
-    new Travel(
-      records(0).toLong,
-      records(1),
-      records(2),
-      records(3),
-      records(4),
-      records(5).toLong,
-      records(5).toDouble.format,
-      records(6).toDouble.format
-    )
-  }
+object Travel {
 
   def apply(cc: CCtransaction): Travel =
     new Travel(
