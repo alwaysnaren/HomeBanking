@@ -267,6 +267,31 @@ object Extract {
       )
     }
 
+  implicit val summary: Extract[Summary] =
+    (row: Array[String]) => {
+      new Summary(
+        row(0).toLong,
+        row(1).toInt,
+        row(2).toDouble.format,
+        row(3).toDouble.format,
+        row(4).toDouble.format,
+        row(5).toDouble.format,
+        row(6).toDouble.format,
+        row(7).toDouble.format,
+        row(8).toDouble.format,
+        row(9).toDouble.format,
+        row(10).toDouble.format,
+        row(11).toDouble.format,
+        row(12).toDouble.format,
+        row(13).toDouble.format,
+        row(14).toDouble.format,
+        row(15).toDouble.format,
+        row(16).toDouble.format,
+        row(17).toDouble.format,
+        row(18).toDouble.format
+      )
+    }
+
 }
 
 

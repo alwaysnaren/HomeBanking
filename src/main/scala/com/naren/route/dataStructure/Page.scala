@@ -24,9 +24,8 @@ case class Page[N <: Record[N]: ClassTag](name: String, parent: Database = null)
 
   def getRow(rowNum: Int): N = {
     if(rowNum > 0 && rowNum <= getLastRowNum) {
-      val row = xssfSheet.getRow(rowNum)
-      val recArray = row.toStrArray
-      ex(recArray)
+      val row = xssfSheet.getRow(rowNum).toStrArray
+      ex(row)
     } else null.asInstanceOf[N]
   }
 

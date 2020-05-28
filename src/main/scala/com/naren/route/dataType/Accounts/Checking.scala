@@ -20,18 +20,7 @@ case class Checking (
     )
 }
 
-object Checking extends Record[Checking] {
+object Checking extends {
   def apply(deb: CheckingTransaction): Checking =
     new Checking(deb.txnID, deb.dateTime, deb.vendor, deb.amount, deb.amount*(-1))
-
-  def apply(row: XSSFRow): Checking = {
-    val records = row.toStrArray
-    new Checking (
-      records(TXN_ID).toLong,
-      records(DATE_TIME),
-      records(VENDOR),
-      records(AMOUNT).toDouble.format,
-      records(CA_BALANCE).toDouble.format
-    )
-  }
 }

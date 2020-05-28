@@ -22,19 +22,7 @@ case class Car(
     )
 }
 
-object Car extends Record[Car]{
-  def apply(row: XSSFRow): Car = {
-    val records = row.toStrArray
-    new Car(
-      records(TXN_ID).toLong,
-      records(DATE_TIME),
-      records(STREAM),
-      records(VENDOR),
-      records(ACCOUNT_ID).toLong,
-      records(AMOUNT).toDouble.format,
-      records(TILL_DATE).toDouble.format
-    )
-  }
+object Car {
 
   def apply(cc: CCtransaction): Car =
     new Car(

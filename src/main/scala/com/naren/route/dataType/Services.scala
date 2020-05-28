@@ -2,8 +2,6 @@ package com.naren.route.dataType
 
 import com.naren.route.dataStructure.Record
 import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction}
-import org.apache.poi.xssf.usermodel.XSSFRow
-import com.naren.route.utils.Implicits.{DoubleOps, XSSFRowOps}
 
 case class Services(
                      txnID: Long,
@@ -30,20 +28,6 @@ case class Services(
 }
 
 object Services {
-
-  def apply(row: XSSFRow): Services = {
-    val record = row.toStrArray
-    new Services(
-      record(TXN_ID).toLong,
-      record(DATE_TIME),
-      record(STREAM),
-      record(SOURCE),
-      record(VENDOR),
-      record(AMOUNT).toDouble.format,
-      record(ACCOUNT_ID).toLong,
-      record(TILL_DATE).toDouble.format
-    )
-  }
 
   def apply(cc: CCtransaction): Services =
     new Services(

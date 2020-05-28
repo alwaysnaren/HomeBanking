@@ -21,19 +21,7 @@ case class Entertainment(
     )
 }
 
-object Entertainment extends Record[Entertainment]{
-  def apply(row: XSSFRow): Entertainment = {
-    val records = row.toStrArray
-    new Entertainment(
-      records(TXN_ID).toLong,
-      records(DATE_TIME),
-      records(STREAM),
-      records(VENDOR),
-      records(ACCOUNT_ID).toLong,
-      records(AMOUNT).toDouble.format,
-      records(TILL_DATE).toDouble.format
-    )
-  }
+object Entertainment {
 
   def apply(cc:CCtransaction): Entertainment =
     new Entertainment(
