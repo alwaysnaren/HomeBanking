@@ -4,127 +4,268 @@ import com.naren.route.dataType.Accounts.{Checking, CreditCard}
 import com.naren.route.dataType._
 import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
 import com.naren.route.entries.{CCaccount, CheckingAccount, House}
-import org.apache.poi.xssf.usermodel.XSSFRow
-import com.naren.route.utils.Implicits.{DoubleOps, XSSFRowOps}
+import com.naren.route.utils.Implicits.DoubleOps
 
 trait Extract[T] {
-  def apply(row:XSSFRow): T
+  def apply(row: Array[String]): T
 }
 
 object Extract {
 
-  implicit val checkingAccount: Extract[CheckingAccount] = new Extract[CheckingAccount] {
-    def apply(row: XSSFRow): CheckingAccount = {
-      val records = row.toStrArray
+  implicit val checkingAccount: Extract[CheckingAccount] =
+    (row: Array[String]) => {
       new CheckingAccount(
-        records(0).toLong,
-        records(1),
-        records(2),
-        records(3),
-        records(4).toLong,
-        records(5).toLong,
-        records(6),
-        records(7).toBoolean
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4).toLong,
+        row(5).toLong,
+        row(6),
+        row(7).toBoolean
       )
     }
-  }
 
-  implicit val ccAccount: Extract[CCaccount] = new Extract[CCaccount] {
-    def apply(row: XSSFRow): CCaccount = {
-      val records = row.toStrArray
+  implicit val ccAccount: Extract[CCaccount] =
+    (row: Array[String]) => {
       new CCaccount(
-        records(0).toLong,
-        records(1),
-        records(2),
-        records(3).toInt,
-        records(4).toLong,
-        records(5),
-        records(6),
-        records(7),
-        records(8).toBoolean
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3).toInt,
+        row(4).toLong,
+        row(5),
+        row(6),
+        row(7),
+        row(8).toBoolean
       )
     }
-  }
 
-  implicit val transaction: Extract[Transaction] = new Extract[Transaction] {
-    def apply(row: XSSFRow): Transaction = {
-      val records = row.toStrArray
+  implicit val transaction: Extract[Transaction] =
+    (row: Array[String]) => {
       new Transaction(
-        records(0).toLong,
-        records(1),
-        records(2),
-        records(3),
-        records(4),
-        records(5),
-        records(6).toDouble.format,
-        records(7).toLong,
-        records(8).toDouble.format,
-        records(9).toDouble.format,
-        records(10).toDouble.format,
-        records(11).toDouble.format,
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4),
+        row(5),
+        row(6).toDouble.format,
+        row(7).toLong,
+        row(8).toDouble.format,
+        row(9).toDouble.format,
+        row(10).toDouble.format,
+        row(11).toDouble.format,
       )
     }
-  }
 
-  implicit val deposit: Extract[Deposit] = new Extract[Deposit] {
-    override def apply(row: XSSFRow): Deposit = ???
-  }
+  implicit val deposit: Extract[Deposit] =
+    (row: Array[String])=> {
+      new Deposit(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4),
+        row(5),
+        row(6).toDouble.format,
+        row(7).toLong,
+        row(8).toDouble.format
+      )
+    }
 
-  implicit val checking: Extract[Checking] = new Extract[Checking] {
-    override def apply(row: XSSFRow): Checking = ???
-  }
 
-  implicit val creditCard: Extract[CreditCard] = new Extract[CreditCard] {
-    override def apply(row: XSSFRow): CreditCard = ???
-  }
+  implicit val checking: Extract[Checking] =
+    (row: Array[String]) => {
+      new Checking (
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3).toDouble.format,
+        row(4).toDouble.format
+      )
+    }
 
-  implicit val ccTransaction: Extract[CCtransaction] = new Extract[CCtransaction] {
-    override def apply(row: XSSFRow): CCtransaction = ???
-  }
 
-  implicit val car: Extract[Car] = new Extract[Car] {
-    override def apply(row: XSSFRow): Car = ???
-  }
+  implicit val creditCard: Extract[CreditCard] =
+    (row: Array[String]) => {
+      new CreditCard (
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3).toDouble.format,
+        row(4).toDouble.format,
+        row(5).toDouble.format
+      )
+    }
 
-  implicit val entertainment: Extract[Entertainment] = new Extract[Entertainment] {
-    override def apply(row: XSSFRow): Entertainment = ???
-  }
+  implicit val ccTransaction: Extract[CCtransaction] =
+    (row: Array[String]) => {
+      new CCtransaction(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4),
+        row(5),
+        row(6).toDouble.format,
+        row(7).toLong,
+        row(8).toDouble.format
+      )
+    }
 
-  implicit val food: Extract[Food] = new Extract[Food] {
-    override def apply(row: XSSFRow): Food = ???
-  }
 
-  implicit val investment: Extract[Investment] = new Extract[Investment] {
-    override def apply(row: XSSFRow): Investment = ???
-  }
+  implicit val car: Extract[Car] =
+    (row: Array[String]) => {
+      new Car(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4).toLong,
+        row(5).toDouble.format,
+        row(6).toDouble.format
+      )
+    }
 
-  implicit val keyvalues: Extract[KeyValues] = new Extract[KeyValues] {
-    override def apply(row: XSSFRow): KeyValues = ???
-  }
 
-  implicit val loan: Extract[Loan] = new Extract[Loan] {
-    override def apply(row: XSSFRow): Loan = ???
-  }
+  implicit val entertainment: Extract[Entertainment] =
+    (row: Array[String]) => {
+      new Entertainment(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4).toLong,
+        row(5).toDouble.format,
+        row(6).toDouble.format
+      )
+    }
 
-  implicit val services: Extract[Services] = new Extract[Services] {
-    override def apply(row: XSSFRow): Services = ???
-  }
+  implicit val food: Extract[Food] =
+    (row: Array[String]) => {
+      new Food(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4).toLong,
+        row(5).toDouble.format,
+        row(6).toDouble.format
+      )
+    }
 
-  implicit val shopping: Extract[Shopping] = new Extract[Shopping] {
-    override def apply(row: XSSFRow): Shopping = ???
-  }
+  implicit val investment: Extract[Investment] =
+    (row: Array[String]) => {
+      new Investment(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3).toLong,
+        row(4),
+        row(5),
+        row(6).toDouble.format,
+        row(7).toLong,
+        row(8).toDouble.format,
+        row(9).toDouble.format
+      )
+    }
 
-  implicit val travel: Extract[Travel] = new Extract[Travel] {
-    override def apply(row: XSSFRow): Travel = ???
-  }
+  implicit val keyvalues: Extract[KeyValues] =
+    (row: Array[String]) => {
+      new KeyValues(
+        row(0),
+        row(1).split(',')
+      )
+    }
 
-  implicit val house: Extract[House] = new Extract[House] {
-    override def apply(row: XSSFRow): House = ???
-  }
+  implicit val loan: Extract[Loan] =
+    (row: Array[String]) => {
+      new Loan(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4).toLong,
+        row(5),
+        row(6).toDouble.format,
+        row(7).toLong,
+        row(8).toDouble.format
+      )
+    }
 
-  implicit val CheckingTransaction: Extract[CheckingTransaction] = new Extract[CheckingTransaction] {
-    override def apply(row: XSSFRow): CheckingTransaction = ???
-  }
+  implicit val services: Extract[Services] =
+    (row: Array[String]) => {
+      new Services(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4),
+        row(5).toDouble.format,
+        row(6).toLong,
+        row(7).toDouble.format
+      )
+    }
+
+  implicit val shopping: Extract[Shopping] =
+    (row: Array[String]) => {
+      new Shopping(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4),
+        row(5).toLong,
+        row(6).toDouble.format,
+        row(7).toDouble.format
+      )
+    }
+
+  implicit val travel: Extract[Travel] =
+    (row: Array[String]) => {
+      new Travel(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4),
+        row(5).toLong,
+        row(5).toDouble.format,
+        row(6).toDouble.format
+      )
+    }
+
+  implicit val house: Extract[House] =
+    (row: Array[String]) => {
+      new House(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4).toDouble.format,
+        row(5).toDouble.format,
+        row(6).toDouble.format,
+        row(7),
+        row(8).toLong,
+        row(9).toDouble.format
+      )
+    }
+
+  implicit val CheckingTransaction: Extract[CheckingTransaction] =
+    (row: Array[String]) => {
+      new CheckingTransaction(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3),
+        row(4),
+        row(5),
+        row(6).toDouble.format,
+        row(7).toLong,
+        row(8).toDouble.format
+      )
+    }
 
 }
 
