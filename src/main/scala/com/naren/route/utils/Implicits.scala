@@ -54,14 +54,11 @@ object Implicits {
   }
 
   implicit class ObjectOps[N <: Object](obj: N) {
-    def apply[T](name: String, args: AnyRef*): Any = {
+    def apply[T](name: String, args: AnyRef*): T = {
       val clas = args.map(_.getClass)
       val meth = obj.getClass.getMethod(name, clas: _*)
       meth.invoke(obj,args: _*).asInstanceOf[T]
     }
   }
 
-  def f[T >: Null <: AnyRef : Manifest]: Unit = None //T
-  // same as above
-  def f1[T >: Null <: AnyRef](implicit ev: Manifest[T]): Unit = None //T
 }

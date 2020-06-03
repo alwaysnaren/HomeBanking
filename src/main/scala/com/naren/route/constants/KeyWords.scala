@@ -11,7 +11,7 @@ object KeyWords {
   val TRAVEL = "Travel"
   val SERVICES = "Services"
   val HOLD = "Hold"
-  val INVESTMENT = "Investment"
+  val NEST = "Nest"
   val ENTERTAINMENT = "Entertainment"
   val MISCELLANEOUS = "Miscellaneous"
   val SUMMARY = "Summary"
@@ -29,4 +29,14 @@ object KeyWords {
   val DEBIT = "Debit"
   val TRANSFER = "Transfer"
   val LOAN = "Loan"
+
+  val CHECKING_ACCOUNTS = "CheckingAccounts"
+  val CREDIT_CARDS = "CreditCards"
+  val LOOKUPS = "Lookups"
+  val HOUSES = "Houses"
+  val ASSETS = "Assets"
+
+  val ASSET_ID = "assetID"
+  val NICKNAME = "nickName"
+  val ACCOUNT_ID = "accountID"
 }

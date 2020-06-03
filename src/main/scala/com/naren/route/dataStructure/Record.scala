@@ -1,13 +1,12 @@
 package com.naren.route.dataStructure
 
-import org.apache.poi.xssf.usermodel.XSSFRow
+import com.naren.route.utils.Extract
 
 import scala.collection.mutable.ArrayBuffer
-import scala.reflect.ClassTag
 import scala.reflect.runtime.universe.{MethodSymbol, TypeTag, typeOf}
 
 
-abstract class Record[T: TypeTag] {
+abstract class Record[T: TypeTag: Extract](implicit ex: Extract[T]) {
 
   def fields: List[String] = typeOf[T].members.collect {
     case m: MethodSymbol if m.isCaseAccessor => m.name.toString

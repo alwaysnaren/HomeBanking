@@ -7,9 +7,9 @@ import com.naren.route.entries.CheckingAccount
 
 object CheckingAccounts extends Page[CheckingAccount](CHECKING_ACCOUNTS,Book(MASTER,PATH)){
 
-  def accArray: Array[CheckingAccount] = getRows.map(CheckingAccount(_))
-  def getAccID(key: String): Long = accArray.find(c => c.nickName == key).get.accountID
-  def nickNames: Array[String] = accArray.map(_.nickName)
-  def getName(key: Long): String = accArray.find(ck => ck.accountID == key).get.nickName
+//  def accArray: Array[CheckingAccount] = getRows.map(CheckingAccount(_))
+//  def getAccID(key: String): Long = accArray.find(c => c.nickName == key).get.accountID
+//  def nickNames: Array[String] = accArray.map(_.nickName)
+//  def getName(key: Long): String = accArray.find(ck => ck.accountID == key).get.nickName
 
 }

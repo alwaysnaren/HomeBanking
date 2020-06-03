@@ -7,9 +7,9 @@ import com.naren.route.constants.FileSystem.{MASTER,PATH}
 
 object CreditCards extends Page[CCaccount](CREDIT_CARDS, Book(MASTER,PATH)){
 
-  def accArray: Array[CCaccount] = getRows.map(CCaccount(_))
-  def getAccID(key: String): Long = accArray.find(c => c.nickName == key).get.accountID
-  def nickNames: Array[String] = accArray.map(_.nickName)
-  def getName(key: Long): String = accArray.find(cc => cc.accountID == key).get.nickName
-  def getCreditLine(key: String): Int = accArray.find(cc => cc.nickName == key).get.creditLine
+//  def accArray: Array[CCaccount] = getRows.map(CCaccount(_))
+//  def getAccID(key: String): Long = accArray.find(c => c.nickName == key).get.accountID
+//  def nickNames: Array[String] = accArray.map(_.nickName)
+//  def getName(key: Long): String = accArray.find(cc => cc.accountID == key).get.nickName
+//  def getCreditLine(key: String): Int = accArray.find(cc => cc.nickName == key).get.creditLine
 }

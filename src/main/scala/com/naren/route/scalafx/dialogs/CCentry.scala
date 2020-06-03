@@ -2,8 +2,10 @@ package com.naren.route.scalafx.dialogs
 
 import com.naren.route.constants.Autofills.ccCards
 import com.naren.route.constants.KeyWords.CREDIT_CARD
-import com.naren.route.constants.pages.CheckingAccounts
+import com.naren.route.constants.Pages.CHECKING_ACCOUNTS
+import com.naren.route.constants.pages.{CheckingAccounts, Fetch}
 import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction}
+import com.naren.route.entries.CheckingAccount
 import com.naren.route.scalafx.skins.Alerts
 import com.naren.route.scalafx.skins.DateTime.datePicker
 import com.naren.route.scalafx.skins.Labels._
@@ -56,7 +58,9 @@ object CCentry {
         res match {
           case Some(ButtonType.OK) => {
             val dateCreated = datePicker.getValue.toString
-            val accID = CheckingAccounts.getAccID(accountName.getValue)
+            //val accID = CheckingAccounts.getAccID(accountName.getValue)
+            val accID =
+              Fetch.value[CheckingAccount,Long](accountName.getValue,CHECKING_ACCOUNTS,"nickName","accountID")
             CCtransaction(IDgenerator.TransactionID(dateCreated), dateCreated.appendTime, stream.text(),
               source.text(), purpose.text(), vendor.text(), amount.text().toDouble.format,
               accID, amount.text().toDouble.format)

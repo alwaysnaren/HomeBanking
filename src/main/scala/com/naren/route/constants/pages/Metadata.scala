@@ -7,7 +7,7 @@ import com.naren.route.dataType.KeyValues
 
 object Metadata extends Page[KeyValues](LOOKUPS,Book(MASTER,PATH)){
 
-  def lookUps: Array[KeyValues] = KeyValues(getRows)
-  def getValues(key: String): Array[String] = lookUps.find(k => k.key == key).get.values
+//  def lookUps: Array[KeyValues] = KeyValues(getRows)
+//  def getValues(key: String): Array[String] = lookUps.find(k => k.key == key).get.values
 
 }

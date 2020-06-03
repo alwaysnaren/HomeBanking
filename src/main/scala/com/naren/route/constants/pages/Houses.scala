@@ -7,7 +7,7 @@ import com.naren.route.constants.Pages.HOUSES
 
 object Houses extends Page[House](HOUSES,Book(MASTER,PATH)){
 
-  def houseArray: Array[House] = getRows.map(House(_))
-  def getAssetID(key: String): Long = houseArray.find(h => h.nickName == key).get.assetID
+//  def houseArray: Array[House] = getRows.map(House(_))
+//  def getAssetID(key: String): Long = houseArray.find(h => h.nickName == key).get.assetID
 
 }

@@ -3,11 +3,13 @@ package com.naren.route.dataStructure
 import java.io.File
 
 import com.naren.route.constants.KeyWords._
-import com.naren.route.constants.FileSystem.{DEFAULT_PAGES, SEPERATOR, PATH}
-import com.naren.route.constants.pages.{CheckingAccounts, CreditCards}
+import com.naren.route.constants.FileSystem.{DEFAULT_PAGES, PATH, SEPERATOR}
+import com.naren.route.constants.pages.{CheckingAccounts, CreditCards, Fetch}
 import com.naren.route.dataType.Accounts.{Checking, CreditCard}
 import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
 import com.naren.route.dataType._
+import com.naren.route.dataType.investments.Nest
+import com.naren.route.entries.{CCaccount, CheckingAccount}
 import com.naren.route.fileSystem.Path
 import com.naren.route.scalafx.skins.Alerts
 import org.apache.poi.xssf.usermodel.{XSSFSheet, XSSFWorkbook}
@@ -34,8 +36,10 @@ case class YearBook(name: String, path: Path) extends Database(new File(path.dir
       case Some(ButtonType.OK) => {
         createEmptyDB(file)
         createEmptyDB(file, DEFAULT_PAGES)
-        for(page <- CheckingAccounts.nickNames) createPage[Checking](page)
-        for(page <- CreditCards.nickNames) createPage[CreditCard](page)
+        for(page <- Fetch.column[CheckingAccount](CHECKING_ACCOUNTS,"nickName"))
+          createPage[Checking](page.toString)
+        for(page <- Fetch.column[CCaccount](CREDIT_CARDS,"nickName"))
+          createPage[CreditCard](page.toString)
 
         Alerts.information("File created!!",fullPath).showAndWait()
       }
@@ -64,7 +68,7 @@ case class YearBook(name: String, path: Path) extends Database(new File(path.dir
         case FOOD => createPage[Food](page)
         case SHOPPING => createPage[Shopping](page)
         case TRAVEL => createPage[Travel](page)
-        case INVESTMENT => createPage[Investment](page)
+        case NEST => createPage[Nest](page)
         case ENTERTAINMENT => createPage[Entertainment](page)
         case SUMMARY => createPage[Summary](page)
         case SERVICES => createPage[Services](page)
