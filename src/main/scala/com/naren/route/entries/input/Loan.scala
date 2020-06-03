@@ -4,8 +4,10 @@ import com.naren.route.constants.KeyWords.LOAN
 
 case class Loan(
                  txnID: Long,
-                 loanFor: String,
-                 accountName: String,
+                 dateTime: String,
+                 commodity: String,
+                 nickName: String,
+                 lender: String,
                  amount: Double
                ) extends Entry(LOAN) {
 

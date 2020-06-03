@@ -1,21 +1,72 @@
 package com.naren.route.executors
 
-import com.naren.route.constants.FileSystem.{MASTER, PATH, YEAR_BOOK}
 import com.naren.route.constants.KeyWords._
-import com.naren.route.constants.pages.{CheckingAccounts, CreditCards}
-import com.naren.route.dataStructure.{Book, Page, YearBook}
+import com.naren.route.constants.Pages.CHECKING_ACCOUNTS
+import com.naren.route.constants.pages.Fetch
+import com.naren.route.dataStructure._
 import com.naren.route.dataType.Accounts.{Checking, CreditCard}
 import com.naren.route.dataType._
 import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
+import com.naren.route.dataType.investments.Nest
+import com.naren.route.entries.{Asset, CheckingAccount, House}
 
 
 object Writer {
 
-  val md = Book(MASTER,PATH)
-  val yb = YearBook(YEAR_BOOK, PATH)
-  /** Adds transaction to a checking account */
+  val md: Book = Initialize.md
+  val yb: YearBook = Initialize.yb
+
+/** Deposit transactions start */
+
+  /** Add deposit to Nest */
+  def depToNest(dep: Deposit): Unit = {
+    val id = Fetch.value[House,Long](dep.source,HOUSE,"nickName","assetID")  //Houses.getAssetID(dep.source)
+    val page = yb.getPage[Nest](NEST)
+    val lastRow = page.getRecFromKeyIfExists(id, "assetID").get
+    val newRow = lastRow.fromDep(dep)
+    page.addRecord(newRow)
+  }
+
+  /** Adds deposit to a checking account */
+  def depToCheckingAcc(dep:Deposit): Unit = {
+    val checkingAccount =
+      Fetch.value[CheckingAccount, String](dep.accountID,CHECKING_ACCOUNTS,"nickName","accountID")  //CheckingAccounts.getName(dep.accountID)
+    val page = yb.getPage[Checking](checkingAccount)
+    val latestCArec = page.getLastRecIfExists
+    val newRec = {
+      if(latestCArec.isDefined) {
+        val rec = latestCArec.get
+        rec.fromDep(dep)
+      }
+      else Checking(dep)
+    }
+    page.addRecord(newRec)
+  }
+
+/** Deposit transactions end */
+
+/** Debit transactions start */
+
+  /** Adds debit to Nest */
+  def debToNest(deb: CheckingTransaction, id: Long): Unit = {
+    val page = yb.getPage[Nest](NEST)
+    val lastRec = page.getRecFromKeyIfExists(id, ASSET_ID)
+    val newRec = lastRec.get.fromDeb(deb)
+    page.addRecord(newRec)
+  }
+
+  /** Adds debit to Loan */
+  def debToLoan(deb: CheckingTransaction, id: Long): Unit = {
+    val page = yb.getPage[Loan](LOAN)
+    val latestRec = page.getRecFromKeyIfExists(id,ASSET_ID)
+    val newRec = latestRec.get.fromDeb(deb)
+    page.addRecord(newRec)
+  }
+
+  /** Adds debit to a checking account */
   def debToCheckingAcc(deb: CheckingTransaction): Unit = {
-    val checkingAccount = CheckingAccounts.getName(deb.accountID)
+    val checkingAccount =
+      Fetch.value[CheckingAccount, String](deb.accountID,CHECKING_ACCOUNTS,NICKNAME,ACCOUNT_ID)//CheckingAccounts.getName(deb.accountID)
     val page = yb.getPage[Checking](checkingAccount)
     val latestCArec = page.getLastRecIfExists
     val newRec = {
@@ -52,12 +103,13 @@ object Writer {
   }
 
   /** Adds Deposit Transactions */
-  def recordDT(dep: Deposit): Unit = {
+  def recordDeposit(dep: Deposit): Unit = {
     val dtPage = yb.getPage[Deposit](DEPOSIT)
     val latestDT: Option[Deposit] = dtPage.getLastRecIfExists
     if(latestDT.isDefined) dep.tillDate += latestDT.get.tillDate
     dtPage.addRecord(dep)
   }
+/** Debit transactions end */
 
 /** CC transactions start */
 
@@ -152,17 +204,6 @@ object Writer {
     }
     page.addRecord(newRec)
   }
-
-//  def addatreamFromCC[N <: Services](cc: CCtransaction, name: String): Unit = {
-//    val page = yb.getPage[N](name)
-//    val latestRec = page.getLastRecIfExists
-//    val newRec = {
-//      if(latestRec.isDefined) {
-//        val rec = latestRec.get
-//        rec.fromCC(cc)
-//      }
-//    }
-//  }
 
 /** CC transactions end */
 

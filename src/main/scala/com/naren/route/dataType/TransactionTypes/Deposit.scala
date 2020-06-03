@@ -2,9 +2,7 @@ package com.naren.route.dataType.TransactionTypes
 
 import com.naren.route.constants.KeyWords.{CREDIT_REWARD, DEPOSIT}
 import com.naren.route.dataStructure.Record
-import com.naren.route.dataType._
-import com.naren.route.utils.Implicits.{DoubleOps, XSSFRowOps}
-import org.apache.poi.xssf.usermodel.XSSFRow
+import com.naren.route.dataType.Transaction
 
 case class Deposit(
                     txnID: Long,

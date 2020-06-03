@@ -24,6 +24,6 @@ case class CreditCard(
 
 object CreditCard {
   def apply(deb: CheckingTransaction): CreditCard =
-    new CreditCard(deb.txnID, deb.dateTime, deb.vendor, deb.amount, deb.amount,
-      CreditCards.getCreditLine(deb.vendor) - deb.amount)
+    new CreditCard(deb.txnID, deb.dateTime, deb.vendor, deb.amount, deb.amount,0)
+      //CreditCards.getCreditLine(deb.vendor) - deb.amount)
 }

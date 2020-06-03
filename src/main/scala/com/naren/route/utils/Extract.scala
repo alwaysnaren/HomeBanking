@@ -1,9 +1,10 @@
-package com.naren.route.dataStructure
+package com.naren.route.utils
 
 import com.naren.route.dataType.Accounts.{Checking, CreditCard}
-import com.naren.route.dataType._
 import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
-import com.naren.route.entries.{CCaccount, CheckingAccount, House}
+import com.naren.route.dataType._
+import com.naren.route.dataType.investments.Nest
+import com.naren.route.entries.{Asset, CCaccount, CheckingAccount, House}
 import com.naren.route.utils.Implicits.DoubleOps
 
 trait Extract[T] {
@@ -14,7 +15,7 @@ object Extract {
 
   implicit val checkingAccount: Extract[CheckingAccount] =
     (row: Array[String]) => {
-      new CheckingAccount(
+      CheckingAccount(
         row(0).toLong,
         row(1),
         row(2),
@@ -28,7 +29,7 @@ object Extract {
 
   implicit val ccAccount: Extract[CCaccount] =
     (row: Array[String]) => {
-      new CCaccount(
+      CCaccount(
         row(0).toLong,
         row(1),
         row(2),
@@ -43,7 +44,7 @@ object Extract {
 
   implicit val transaction: Extract[Transaction] =
     (row: Array[String]) => {
-      new Transaction(
+      Transaction(
         row(0).toLong,
         row(1),
         row(2),
@@ -61,7 +62,7 @@ object Extract {
 
   implicit val deposit: Extract[Deposit] =
     (row: Array[String])=> {
-      new Deposit(
+      Deposit(
         row(0).toLong,
         row(1),
         row(2),
@@ -77,7 +78,7 @@ object Extract {
 
   implicit val checking: Extract[Checking] =
     (row: Array[String]) => {
-      new Checking (
+      Checking (
         row(0).toLong,
         row(1),
         row(2),
@@ -89,7 +90,7 @@ object Extract {
 
   implicit val creditCard: Extract[CreditCard] =
     (row: Array[String]) => {
-      new CreditCard (
+      CreditCard (
         row(0).toLong,
         row(1),
         row(2),
@@ -101,7 +102,7 @@ object Extract {
 
   implicit val ccTransaction: Extract[CCtransaction] =
     (row: Array[String]) => {
-      new CCtransaction(
+      CCtransaction(
         row(0).toLong,
         row(1),
         row(2),
@@ -117,7 +118,7 @@ object Extract {
 
   implicit val car: Extract[Car] =
     (row: Array[String]) => {
-      new Car(
+      Car(
         row(0).toLong,
         row(1),
         row(2),
@@ -131,7 +132,7 @@ object Extract {
 
   implicit val entertainment: Extract[Entertainment] =
     (row: Array[String]) => {
-      new Entertainment(
+      Entertainment(
         row(0).toLong,
         row(1),
         row(2),
@@ -144,7 +145,7 @@ object Extract {
 
   implicit val food: Extract[Food] =
     (row: Array[String]) => {
-      new Food(
+      Food(
         row(0).toLong,
         row(1),
         row(2),
@@ -155,9 +156,20 @@ object Extract {
       )
     }
 
-  implicit val investment: Extract[Investment] =
+  implicit val asset: Extract[Asset] =
     (row: Array[String]) => {
-      new Investment(
+      Asset(
+        row(0).toLong,
+        row(1),
+        row(2),
+        row(3).toDouble.format,
+        row(4)
+      )
+    }
+
+  implicit val nest: Extract[Nest] =
+    (row: Array[String]) => {
+      Nest(
         row(0).toLong,
         row(1),
         row(2),
@@ -173,7 +185,7 @@ object Extract {
 
   implicit val keyvalues: Extract[KeyValues] =
     (row: Array[String]) => {
-      new KeyValues(
+      KeyValues(
         row(0),
         row(1).split(',')
       )
@@ -181,7 +193,7 @@ object Extract {
 
   implicit val loan: Extract[Loan] =
     (row: Array[String]) => {
-      new Loan(
+      Loan(
         row(0).toLong,
         row(1),
         row(2),
@@ -196,7 +208,7 @@ object Extract {
 
   implicit val services: Extract[Services] =
     (row: Array[String]) => {
-      new Services(
+      Services(
         row(0).toLong,
         row(1),
         row(2),
@@ -210,7 +222,7 @@ object Extract {
 
   implicit val shopping: Extract[Shopping] =
     (row: Array[String]) => {
-      new Shopping(
+      Shopping(
         row(0).toLong,
         row(1),
         row(2),
@@ -224,7 +236,7 @@ object Extract {
 
   implicit val travel: Extract[Travel] =
     (row: Array[String]) => {
-      new Travel(
+      Travel(
         row(0).toLong,
         row(1),
         row(2),
@@ -238,7 +250,7 @@ object Extract {
 
   implicit val house: Extract[House] =
     (row: Array[String]) => {
-      new House(
+      House(
         row(0).toLong,
         row(1),
         row(2),
@@ -252,9 +264,9 @@ object Extract {
       )
     }
 
-  implicit val CheckingTransaction: Extract[CheckingTransaction] =
+  implicit val checkingTransaction: Extract[CheckingTransaction] =
     (row: Array[String]) => {
-      new CheckingTransaction(
+      CheckingTransaction(
         row(0).toLong,
         row(1),
         row(2),
@@ -269,7 +281,7 @@ object Extract {
 
   implicit val summary: Extract[Summary] =
     (row: Array[String]) => {
-      new Summary(
+      Summary(
         row(0).toLong,
         row(1).toInt,
         row(2).toDouble.format,

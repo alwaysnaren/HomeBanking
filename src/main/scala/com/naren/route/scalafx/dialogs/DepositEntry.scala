@@ -11,8 +11,11 @@ import com.naren.route.utils.IDgenerator
 import scalafx.scene.Node
 import com.naren.route.utils.Implicits.{DoubleOps, StringOps}
 import com.naren.route.constants.KeyWords.DEPOSIT
-import com.naren.route.constants.pages.CheckingAccounts
+import com.naren.route.constants.Pages.CHECKING_ACCOUNTS
+import com.naren.route.constants.pages.{CheckingAccounts, Fetch}
 import com.naren.route.dataType.TransactionTypes.Deposit
+import com.naren.route.entries.CheckingAccount
+import com.naren.route.scalafx.dialogs.CCentry.accountName
 import scalafx.beans.Observable
 
 object DepositEntry {
@@ -58,7 +61,9 @@ object DepositEntry {
         res match {
           case Some(ButtonType.OK) => {
             val dateCreated = datePicker.getValue.toString
-            val accID = CheckingAccounts.getAccID(accountName.getValue)
+            //val accID = CheckingAccounts.getAccID(accountName.getValue)
+            val accID =
+              Fetch.value[CheckingAccount,Long](accountName.getValue,CHECKING_ACCOUNTS,"nickName","accountID")
             Deposit(IDgenerator.TransactionID(dateCreated), dateCreated.appendTime, stream.text(),
               source.text(), purpose.text(), vendor.text(), amount.text().toDouble.format,
               accID, amount.text().toDouble.format)
