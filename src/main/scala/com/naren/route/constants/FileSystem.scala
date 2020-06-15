@@ -9,7 +9,7 @@ import com.naren.route.utils.Implicits.StringOps
 
 object FileSystem {
 
-  val PATH = new Path("D:\\SundayIndian\\Next\\Projects\\TrackSpendings\\prod\\temp")
+  val PATH = Path("D:\\SundayIndian\\Next\\Projects\\TrackSpendings\\prod\\temp")
   lazy val SEPERATOR = "\\"
   lazy val DEFAULT_PAGES = Array(
     SUMMARY,JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC,DEPOSIT,CREDIT_CARD,DEBIT,CAR,FOOD,

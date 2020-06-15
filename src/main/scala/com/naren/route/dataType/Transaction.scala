@@ -1,8 +1,9 @@
 package com.naren.route.dataType
 
-import com.naren.route.constants.KeyWords.{CREDIT, CREDIT_CARD, CREDIT_REWARD, DEBIT}
+import com.naren.route.constants.KeyWords.{CREDIT, CREDIT_CARD, CREDIT_REWARD, DEBIT, LOAN}
 import com.naren.route.dataStructure.Record
 import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
+import com.naren.route.entries.AssetLoans
 import org.apache.poi.xssf.usermodel.XSSFRow
 import com.naren.route.utils.Implicits.{DoubleOps, XSSFRowOps}
 
@@ -58,6 +59,10 @@ case class Transaction(
       cc.txnID, cc.dateTime, CREDIT_CARD, cc.stream, cc.source, cc.vendor, cc.amount, cc.accountID,
       balance, creditDebt + cc.amount, credit, debtsPaid
     )
+
+  def fromAssetLoan(loan: AssetLoans, id: Long): Transaction =
+    Transaction(id,loan.purchaseDate,CREDIT_CARD,LOAN,loan.nickName,loan.lender,loan.loanAmount,
+      0L,balance,creditDebt,credit,debtsPaid)
 
 }
 

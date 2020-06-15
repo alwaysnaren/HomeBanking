@@ -1,5 +1,6 @@
 package com.naren.route.executors
 
+import com.naren.route.constants.FileSystem
 import com.naren.route.constants.KeyWords._
 import com.naren.route.constants.Pages.CHECKING_ACCOUNTS
 import com.naren.route.constants.pages.Fetch
@@ -8,7 +9,7 @@ import com.naren.route.dataType.Accounts.{Checking, CreditCard}
 import com.naren.route.dataType._
 import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
 import com.naren.route.dataType.investments.Nest
-import com.naren.route.entries.{Asset, CheckingAccount, House}
+import com.naren.route.entries.{AssetLoans, CheckingAccount, House}
 
 
 object Writer {
@@ -16,7 +17,39 @@ object Writer {
   val md: Book = Initialize.md
   val yb: YearBook = Initialize.yb
 
+/** New Loan transactions start */
+
+  def writeToLoans(loan: AssetLoans, id: Long): Unit = {
+    val page = yb.getPage[Loan](LOANS)
+    val entry = Loan(loan, id)
+    page.addRecord(entry)
+  }
+
+  def writeToDebt(loan: AssetLoans, id: Long): Unit = {
+    val page = yb.getPage[CCtransaction](CREDIT_CARD)
+    val rec = page.getLastRecIfExists.get
+    val entry = rec.fromAssetLoan(loan,id)
+    page.addRecord(entry)
+  }
+
+  def writeToTransactions(loan: AssetLoans, id: Long): Unit = {
+    val page = yb.getPage[Transaction](FileSystem.MONTH)
+    val rec = page.getLastRecIfExists.get
+    val entry = rec.fromAssetLoan(loan,id)
+    page.addRecord(entry)
+  }
+
+/** New Loan transactions end */
+
 /** Deposit transactions start */
+
+  /** Adds Deposit Transactions */
+  def recordDeposit(dep: Deposit): Unit = {
+    val dtPage = yb.getPage[Deposit](DEPOSIT)
+    val latestDT: Option[Deposit] = dtPage.getLastRecIfExists
+    if(latestDT.isDefined) dep.tillDate += latestDT.get.tillDate
+    dtPage.addRecord(dep)
+  }
 
   /** Add deposit to Nest */
   def depToNest(dep: Deposit): Unit = {
@@ -102,13 +135,6 @@ object Writer {
     ctPage.addRecord(deb)
   }
 
-  /** Adds Deposit Transactions */
-  def recordDeposit(dep: Deposit): Unit = {
-    val dtPage = yb.getPage[Deposit](DEPOSIT)
-    val latestDT: Option[Deposit] = dtPage.getLastRecIfExists
-    if(latestDT.isDefined) dep.tillDate += latestDT.get.tillDate
-    dtPage.addRecord(dep)
-  }
 /** Debit transactions end */
 
 /** CC transactions start */
@@ -207,11 +233,6 @@ object Writer {
 
 /** CC transactions end */
 
-  /** Adds Loan Transaction*/
-  def recordLoanPayment(deb: CheckingTransaction): Unit = {
-    val page = yb.getPage[Loan](LOAN)
-
-  }
 
 
 }

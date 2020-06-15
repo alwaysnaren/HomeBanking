@@ -27,9 +27,11 @@ object Labels {
   val VENDOR: Label = new Label("Vendor: ")
   val AMOUNT: Label = new Label("Amount: ")
   val ACCOUNT: Label = new Label("Account: ")
+  val COMMODITY: Label = new Label("Commodity: ")
 
   /** House */
   val COST_PRICE: Label = new Label("CostPrice: ")
+  val LOAN: Label = new Label("Loan: ")
   val CLOSING_COSTS: Label = new Label("Closing costs: ")
   val LENDER: Label = new Label("Lender: ")
   val DOWN_PAYMENT: Label = new Label("Down payment: ")
