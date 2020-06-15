@@ -10,10 +10,6 @@ case class House(
                 purchaseDate: String,
                 address: String,
                 costPrice: Double,
-                closingCosts: Double = 0,
-                downPayment: Double = 0,
-                lender: String = "",
-                loanAmount: Double = 0,
-                interestRate: Double = 0
+                closingCosts: Double = 0
                 ) extends Record[House]
 

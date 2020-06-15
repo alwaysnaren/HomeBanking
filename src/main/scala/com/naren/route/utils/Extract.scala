@@ -4,7 +4,7 @@ import com.naren.route.dataType.Accounts.{Checking, CreditCard}
 import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
 import com.naren.route.dataType._
 import com.naren.route.dataType.investments.Nest
-import com.naren.route.entries.{Asset, CCaccount, CheckingAccount, House}
+import com.naren.route.entries._
 import com.naren.route.utils.Implicits.DoubleOps
 
 trait Extract[T] {
@@ -156,14 +156,18 @@ object Extract {
       )
     }
 
-  implicit val asset: Extract[Asset] =
+  implicit val assetLoans: Extract[AssetLoans] =
     (row: Array[String]) => {
-      Asset(
+      AssetLoans(
         row(0).toLong,
         row(1),
         row(2),
-        row(3).toDouble.format,
-        row(4)
+        row(3),
+        row(4).toDouble.format,
+        row(5).toDouble.format,
+        row(6).toDouble.format,
+        row(7).toDouble.format,
+        row(8)
       )
     }
 
@@ -256,11 +260,7 @@ object Extract {
         row(2),
         row(3),
         row(4).toDouble.format,
-        row(5).toDouble.format,
-        row(6).toDouble.format,
-        row(7),
-        row(8).toLong,
-        row(9).toDouble.format
+        row(5).toDouble.format
       )
     }
 

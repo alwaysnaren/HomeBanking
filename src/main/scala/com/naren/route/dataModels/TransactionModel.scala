@@ -2,7 +2,7 @@ package data.Reader
 
 import com.naren.route.scalafx.dialogs._
 import com.naren.route.constants.FileSystem.PATH
-import com.naren.route.entries.{Asset, CCaccount, CheckingAccount}
+import com.naren.route.entries.{AssetLoans, CCaccount, CheckingAccount}
 import com.naren.route.constants.KeyWords._
 import com.naren.route.constants.pages.{Fetch, Houses}
 import com.naren.route.dataType.{Loan, Services, Transaction}
@@ -10,11 +10,28 @@ import com.naren.route.dataStructure.Book
 import com.naren.route.dataType.Accounts.{Checking, CreditCard}
 import com.naren.route.executors.{Reader, Writer}
 import com.naren.route.scalafx.skins.Alerts
+import com.naren.route.utils.IDgenerator
+import scalafx.scene.control.ButtonType
 
 class TransactionModel {
 
+  /** Make entry to AssetLoans in Master
+    * Make entry to loans page
+    * Make entry to credit card page z                                                                                      fr*/
   def onLoanEntry(): Unit = {
+    val result = AddLoan.showAndWait()
+    result match {
+      case Some(loan) => {
+        val aPage = Reader.md.getPage[AssetLoans](ASSET_LOANS)
+        aPage.addRecord(loan)
 
+        val id = IDgenerator.TransactionID(loan.purchaseDate)
+        Writer.writeToLoans(loan,id)
+        Writer.writeToDebt(loan,id)
+        Writer.writeToTransactions(loan,id)
+      }
+      case _ => None
+    }
   }
 
   def onTransferEntry(): Unit = {
@@ -73,7 +90,7 @@ class TransactionModel {
           }
           case LOAN => {
             val page = Reader.yb.getPage[Loan](LOAN)
-            val id = Fetch.value[Asset,Long](deb.source,ASSETS,NICKNAME,ASSET_ID)
+            val id = Fetch.value[AssetLoans,Long](deb.source,ASSET_LOANS,NICKNAME,ASSET_ID)
             deb.source match {
               case NEST => Writer.debToNest(deb,id)
               case _ => None
@@ -116,23 +133,26 @@ class TransactionModel {
     result match {
       case Some(house) => {
         Houses.addRecord(house)
-        Alerts.information(SUCCESS,s"Congrats!! ${house.address} is added")
+        val res = Alerts.confirmation(SUCCESS,s"Congrats!! ${house.address} is added," +
+          s"Did you get a loan and want to add it now?")
           .showAndWait()
+        res match {
+          case Some(ButtonType.Yes) =>
+        }
       }
+      case _ => None
     }
-
   }
 
   def onAddChecking(): Unit = {
     val result = AddChecking.showAndWait()
     result match {
-      case Some(debit) => {
+      case Some(debit) =>
         val page = Reader.md.getPage[CheckingAccount](CHECKING_ACCOUNTS)
         page.addRecord(debit)
         Reader.yb.createPage[Checking](debit.nickName)
         Alerts.information(SUCCESS,s"New checking account from ${debit.bankName} is added")
           .showAndWait()
-      }
       case _ => None
     }
   }

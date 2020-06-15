@@ -1,10 +1,9 @@
 package com.naren.route.dataType.TransactionTypes
 
-import com.naren.route.constants.KeyWords.{CREDIT_CARD, DEBIT}
+import com.naren.route.constants.KeyWords.{CREDIT_CARD,CREDIT,LOAN}
 import com.naren.route.dataStructure.Record
 import com.naren.route.dataType._
-import org.apache.poi.xssf.usermodel.XSSFRow
-import com.naren.route.utils.Implicits.{DoubleOps, XSSFRowOps}
+import com.naren.route.entries.AssetLoans
 
 
 case class CCtransaction(
@@ -32,4 +31,7 @@ case class CCtransaction(
       )
     }
   }
+
+  def fromAssetLoan(loan: AssetLoans, id: Long): CCtransaction =
+    CCtransaction(id,loan.purchaseDate,LOAN,loan.nickName,loan.commodity,loan.lender,loan.loanAmount,0L,tillDate + loan.loanAmount)
 }

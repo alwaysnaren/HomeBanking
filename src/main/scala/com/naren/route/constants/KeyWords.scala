@@ -34,7 +34,7 @@ object KeyWords {
   val CREDIT_CARDS = "CreditCards"
   val LOOKUPS = "Lookups"
   val HOUSES = "Houses"
-  val ASSETS = "Assets"
+  val ASSET_LOANS = "AssetLoans"
 
   val ASSET_ID = "assetID"
   val NICKNAME = "nickName"
