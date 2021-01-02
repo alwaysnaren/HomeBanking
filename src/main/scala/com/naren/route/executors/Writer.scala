@@ -7,7 +7,7 @@ import com.naren.route.constants.pages.Fetch
 import com.naren.route.dataStructure._
 import com.naren.route.dataType.Accounts.{Checking, CreditCard}
 import com.naren.route.dataType._
-import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
+import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit, Transfer}
 import com.naren.route.dataType.investments.Nest
 import com.naren.route.entries.{AssetLoans, CheckingAccount, House}
 
@@ -27,9 +27,11 @@ object Writer {
 
   def writeToDebt(loan: AssetLoans, id: Long): Unit = {
     val page = yb.getPage[CCtransaction](CREDIT_CARD)
-    val rec = page.getLastRecIfExists.get
-    val entry = rec.fromAssetLoan(loan,id)
-    page.addRecord(entry)
+    val rec = page.getLastRecIfExists
+    if(rec.isDefined) {
+      val entry = rec.get.fromAssetLoan(loan, id)
+      page.addRecord(entry)
+    }
   }
 
   def writeToTransactions(loan: AssetLoans, id: Long): Unit = {
@@ -63,7 +65,7 @@ object Writer {
   /** Adds deposit to a checking account */
   def depToCheckingAcc(dep:Deposit): Unit = {
     val checkingAccount =
-      Fetch.value[CheckingAccount, String](dep.accountID,CHECKING_ACCOUNTS,"nickName","accountID")  //CheckingAccounts.getName(dep.accountID)
+      Fetch.value[CheckingAccount, String](dep.accountID,CHECKING_ACCOUNTS,ACCOUNT_ID,NICKNAME)  //CheckingAccounts.getName(dep.accountID)
     val page = yb.getPage[Checking](checkingAccount)
     val latestCArec = page.getLastRecIfExists
     val newRec = {
@@ -99,7 +101,7 @@ object Writer {
   /** Adds debit to a checking account */
   def debToCheckingAcc(deb: CheckingTransaction): Unit = {
     val checkingAccount =
-      Fetch.value[CheckingAccount, String](deb.accountID,CHECKING_ACCOUNTS,NICKNAME,ACCOUNT_ID)//CheckingAccounts.getName(deb.accountID)
+      Fetch.value[CheckingAccount, String](deb.accountID,CHECKING_ACCOUNTS,ACCOUNT_ID,NICKNAME)//CheckingAccounts.getName(deb.accountID)
     val page = yb.getPage[Checking](checkingAccount)
     val latestCArec = page.getLastRecIfExists
     val newRec = {
@@ -233,6 +235,41 @@ object Writer {
 
 /** CC transactions end */
 
+/** Transfer transactions start */
 
+  /** Adds transfer to TRANSFER */
+  def recordTransfer(trn: Transfer): Unit = {
+    val page = Reader.yb.getPage[Transfer](TRANSFER)
+    val rec = page.getLastRecIfExists
+    if(rec.isDefined) trn.tillDate += rec.get.tillDate
+    page.addRecord(trn)
+  }
 
+  /** Adds transfer to TRANSACTION */
+  def transferToTransaction(trn: Transfer): Unit = {
+    val page = Reader.transactionPage
+    val rec = page.getLastRecIfExists
+    val newRec = rec.get.fromTransfer(trn)
+    page.addRecord(newRec)
+  }
+
+  /** Adds transfer to From Acc */
+  def transferFromAcc(trn: Transfer): Unit = {
+    val acc = Fetch.value[CheckingAccount,String](trn.fromAcc,CHECKING_ACCOUNTS,NICKNAME,ACCOUNT_ID)
+    val page = yb.getPage[Checking](acc)
+    val rec = page.getLastRecIfExists
+    val newRec = rec.get.fromTransferred(trn)
+    page.addRecord(newRec)
+  }
+
+  /** Adds transfer to TO Acc */
+  def transferToAcc(trn: Transfer): Unit = {
+    val acc = Fetch.value[CheckingAccount,String](trn.toAcc,CHECKING_ACCOUNTS,NICKNAME,ACCOUNT_ID)
+    val page = yb.getPage[Checking](acc)
+    val rec = page.getLastRecIfExists
+    val newRec = rec.get.fromTransfer(trn)
+    page.addRecord(newRec)
+  }
+
+/** Transfer transactions end */
 }

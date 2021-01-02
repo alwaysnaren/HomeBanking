@@ -14,6 +14,9 @@ object Labels {
   val CREDIT_LINE: Label = new Label("Credit line: ")
   val EXPIRY_INFO: Label = new Label("Expiry Info(mmYY): ")
   val CVV: Label = new Label("CVV: ")
+  val FROM_ACC: Label = new Label("From Acc: ")
+  val TO_ACC: Label = new Label("To Acc: ")
+
 
   /** PageInfo */
   val FILE_NAME: Label = new Label("FileName: ")

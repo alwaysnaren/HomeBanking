@@ -1,9 +1,7 @@
 package com.naren.route.dataType.Accounts
 
 import com.naren.route.dataStructure.Record
-import com.naren.route.dataType.TransactionTypes.{CheckingTransaction, Deposit}
-import org.apache.poi.xssf.usermodel.XSSFRow
-import com.naren.route.utils.Implicits.{DoubleOps, XSSFRowOps}
+import com.naren.route.dataType.TransactionTypes.{CheckingTransaction, Deposit, Transfer}
 
 
 case class Checking (
@@ -22,6 +20,16 @@ case class Checking (
   def fromDep(dep: Deposit): Checking =
     new Checking(
       dep.txnID, dep.dateTime, dep.vendor, dep.amount, balance + dep.amount
+    )
+
+  def fromTransferred(trn: Transfer): Checking =
+    new Checking(
+      trn.txnID,trn.dateTime,trn.toAcc.toString,trn.amount,balance - trn.amount
+    )
+
+  def fromTransfer(trn: Transfer): Checking =
+    new Checking(
+      trn.txnID,trn.dateTime,trn.fromAcc.toString,trn.amount,balance + trn.amount
     )
 
 }

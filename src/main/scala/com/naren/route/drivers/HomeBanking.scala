@@ -41,14 +41,14 @@ object HomeBanking extends JFXApp{
 
   DepositEntry.onAction = _ => model.onDepositEntry()
   DebitEntry.onAction = _ => model.onDebitEntry()
-  CcEntry.onAction = _ => None
-  LoanEntry.onAction = _ => None
-  TransferEntry.onAction = _ => None
+  CcEntry.onAction = _ => model.onCcEntry()
+  LoanEntry.onAction = _ => model.onLoanEntry()
+  TransferEntry.onAction = _ => model.onTransferEntry()
   AddChecking.onAction = _ => model.onAddChecking()
   CreatePage.onAction = _ => model.onCreatePage()
   AddCC.onAction = _ => model.onAddCreditCard()
   AddHouse.onAction = _ => model.onAddHouse()
-  AddStock.onAction = _ => model
+  AddStock.onAction = _ => None
 
   /** Main view*/
   stage = new JFXApp.PrimaryStage {
