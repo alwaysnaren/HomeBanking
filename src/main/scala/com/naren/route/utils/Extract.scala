@@ -1,7 +1,7 @@
 package com.naren.route.utils
 
 import com.naren.route.dataType.Accounts.{Checking, CreditCard}
-import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
+import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit, Transfer}
 import com.naren.route.dataType._
 import com.naren.route.dataType.investments.Nest
 import com.naren.route.entries._
@@ -112,6 +112,18 @@ object Extract {
         row(6).toDouble.format,
         row(7).toLong,
         row(8).toDouble.format
+      )
+    }
+
+  implicit val transfer: Extract[Transfer] =
+    (row: Array[String]) => {
+      Transfer(
+        row(0).toLong,
+        row(1),
+        row(2).toLong,
+        row(3).toLong,
+        row(4).toLong,
+        row(5).toDouble.format
       )
     }
 

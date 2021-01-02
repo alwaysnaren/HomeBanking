@@ -17,9 +17,10 @@ object Fetch {
     page.getAllRows.find(_(find) == key).get(field).asInstanceOf[C]
   }
 
-  def column[N <: Record[N]: ClassTag](name: String, field: String)(implicit ex: Extract[N]): Array[Any] = {
+  def column[N <: Record[N]: ClassTag,C: ClassTag](name: String, field: String)(implicit ex: Extract[N]): Array[C] = {
     val page = md.getPage[N](name)
-    page.getAllRows.map(_(field))
+    page.getAllRows.map(_(field).asInstanceOf[C])
+    //page.getAllRows.map(_.fields)
   }
 
 }

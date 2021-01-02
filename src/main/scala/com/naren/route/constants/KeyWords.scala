@@ -25,7 +25,7 @@ object KeyWords {
   val CONFIRMATION = "Confirmation"
 
   val CREDIT = "Credit"
-  val CREDIT_CARD = "CreditCard"
+  val CREDIT_CARD = "creditcard"
   val DEBIT = "Debit"
   val TRANSFER = "Transfer"
   val LOAN = "Loan"
@@ -39,4 +39,5 @@ object KeyWords {
   val ASSET_ID = "assetID"
   val NICKNAME = "nickName"
   val ACCOUNT_ID = "accountID"
+  val CREDIT_LINE = "creditLine"
 }

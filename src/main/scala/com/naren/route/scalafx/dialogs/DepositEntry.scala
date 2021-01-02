@@ -15,8 +15,6 @@ import com.naren.route.constants.Pages.CHECKING_ACCOUNTS
 import com.naren.route.constants.pages.{CheckingAccounts, Fetch}
 import com.naren.route.dataType.TransactionTypes.Deposit
 import com.naren.route.entries.CheckingAccount
-import com.naren.route.scalafx.dialogs.CCentry.accountName
-import scalafx.beans.Observable
 
 object DepositEntry {
 

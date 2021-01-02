@@ -8,6 +8,7 @@ import com.naren.route.constants.pages.{Fetch, Houses}
 import com.naren.route.dataType.{Loan, Services, Transaction}
 import com.naren.route.dataStructure.Book
 import com.naren.route.dataType.Accounts.{Checking, CreditCard}
+import com.naren.route.dataType.TransactionTypes.Transfer
 import com.naren.route.executors.{Reader, Writer}
 import com.naren.route.scalafx.skins.Alerts
 import com.naren.route.utils.IDgenerator
@@ -25,7 +26,7 @@ class TransactionModel {
         val aPage = Reader.md.getPage[AssetLoans](ASSET_LOANS)
         aPage.addRecord(loan)
 
-        val id = IDgenerator.TransactionID(loan.purchaseDate)
+        val id = IDgenerator.TransactionID(loan.purchaseDate.split(" ").head)
         Writer.writeToLoans(loan,id)
         Writer.writeToDebt(loan,id)
         Writer.writeToTransactions(loan,id)
@@ -35,7 +36,14 @@ class TransactionModel {
   }
 
   def onTransferEntry(): Unit = {
-
+    val result = TransferEntry.showAndWait()
+    result match {
+      case Some(trn) => {
+        Writer.recordTransfer(trn)
+        Writer
+      }
+      case _ => None
+    }
   }
 
   def onAddStock(): Unit = {
@@ -80,7 +88,7 @@ class TransactionModel {
           else Transaction(deb)
         Reader.transactionPage.addRecord(latestTr)
 
-        deb.stream match {
+        deb.stream.toLowerCase() match {
           case CREDIT_CARD => Writer.debToCreditAcc(deb)
           case SERVICES => {
             val srPage = Reader.yb.getPage[Services](SERVICES)
@@ -112,6 +120,7 @@ class TransactionModel {
       case Some(dep) => {
 
         Writer.recordDeposit(dep)
+        Writer.depToCheckingAcc(dep)
 
         val latestTr =
           if(Reader.lastTransaction != null) Reader.lastTransaction.fromDep(dep)

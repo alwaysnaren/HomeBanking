@@ -8,7 +8,7 @@ object TimeMachine {
   def getDateTime: String = LocalDateTime.now()
     .format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss"))
 
-  def getDTLong: Long = LocalDateTime.now()
+  def getDateTimeLong: Long = LocalDateTime.now()
     .format(DateTimeFormatter.ofPattern("MMddYYYYhhmmss")).toLong
 
   def getTime: String = LocalTime.now()

@@ -6,7 +6,7 @@ import com.naren.route.constants.KeyWords._
 import com.naren.route.constants.FileSystem.{DEFAULT_PAGES, PATH, SEPERATOR}
 import com.naren.route.constants.pages.{CheckingAccounts, CreditCards, Fetch}
 import com.naren.route.dataType.Accounts.{Checking, CreditCard}
-import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit}
+import com.naren.route.dataType.TransactionTypes.{CCtransaction, CheckingTransaction, Deposit, Transfer}
 import com.naren.route.dataType._
 import com.naren.route.dataType.investments.Nest
 import com.naren.route.entries.{CCaccount, CheckingAccount}
@@ -36,9 +36,9 @@ case class YearBook(name: String, path: Path) extends Database(new File(path.dir
       case Some(ButtonType.OK) => {
         createEmptyDB(file)
         createEmptyDB(file, DEFAULT_PAGES)
-        for(page <- Fetch.column[CheckingAccount](CHECKING_ACCOUNTS,"nickName"))
+        for(page <- Fetch.column[CheckingAccount,String](CHECKING_ACCOUNTS,"nickName"))
           createPage[Checking](page.toString)
-        for(page <- Fetch.column[CCaccount](CREDIT_CARDS,"nickName"))
+        for(page <- Fetch.column[CCaccount,String](CREDIT_CARDS,"nickName"))
           createPage[CreditCard](page.toString)
 
         Alerts.information("File created!!",fullPath).showAndWait()
@@ -72,6 +72,7 @@ case class YearBook(name: String, path: Path) extends Database(new File(path.dir
         case ENTERTAINMENT => createPage[Entertainment](page)
         case SUMMARY => createPage[Summary](page)
         case SERVICES => createPage[Services](page)
+        case TRANSFER => createPage[Transfer](page)
         case _ => createPage[Transaction](page)
       }
     }

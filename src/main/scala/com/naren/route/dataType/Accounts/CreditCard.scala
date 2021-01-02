@@ -1,10 +1,10 @@
 package com.naren.route.dataType.Accounts
 
-import com.naren.route.constants.pages.CreditCards
+import com.naren.route.constants.pages.{CreditCards, Fetch}
 import com.naren.route.dataStructure.Record
 import com.naren.route.dataType.TransactionTypes.CheckingTransaction
-import org.apache.poi.xssf.usermodel.XSSFRow
-import com.naren.route.utils.Implicits.{DoubleOps, XSSFRowOps}
+import com.naren.route.entries.CCaccount
+import com.naren.route.constants.KeyWords.{CREDIT_CARDS,NICKNAME,CREDIT_LINE}
 
 
 case class CreditCard(
@@ -18,12 +18,13 @@ case class CreditCard(
 
   def fromDeb(deb: CheckingTransaction): CreditCard =
     new CreditCard(
-      deb.txnID, deb.dateTime, deb.source, deb.amount * (-1), debt - deb.amount, balance + deb.amount
+      deb.txnID, deb.dateTime, deb.accountID.toString, deb.amount * (-1),
+      debt - deb.amount, balance + deb.amount
     )
 }
 
 object CreditCard {
   def apply(deb: CheckingTransaction): CreditCard =
-    new CreditCard(deb.txnID, deb.dateTime, deb.vendor, deb.amount, deb.amount,0)
-      //CreditCards.getCreditLine(deb.vendor) - deb.amount)
+    new CreditCard(deb.txnID, deb.dateTime, deb.vendor, deb.amount * (-1), deb.amount,
+      Fetch.value[CCaccount,Int](deb.vendor,CREDIT_CARDS,NICKNAME,CREDIT_LINE) * (-1))
 }
